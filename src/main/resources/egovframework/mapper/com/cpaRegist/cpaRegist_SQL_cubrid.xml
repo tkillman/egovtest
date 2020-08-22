@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CpaRegistDAO">
+
+	<select id="cpaRegistForm" parameterType="egovframework.com.cpa.model.CpaRegistVO" resultType="egovframework.com.cpa.model.CpaRegistVO">
+		SELECT *
+		FROM TB_BOARD
+		WHERE TB_IDX = #{tbIdx}
+	</select>	
+	
+	<select id="cpaRegistDetailList" parameterType="egovframework.com.cpa.model.CpaRegistVO" resultType="egovframework.com.cpa.model.CpaRegistDetailVO">
+		SELECT *
+		FROM TB_BOARD_DETAIL
+		WHERE TB_IDX = #{tbIdx}
+	</select>	
+	
+	<insert id="insertCpaRegist" parameterType="egovframework.com.cpa.model.CpaRegistVO">
+		INSERT INTO TB_BOARD (TB_IDX, TITLE, content, TYPE_CD, drink_Yn) 
+			VALUES (TB_BOARD_TB_IDX_SERIAL.NEXT_VALUE, #{title}, #{content}, #{typeCd}, #{drinkYn})
+	</insert>
+	
+	<insert id="insertCpaRegistDetail" parameterType="egovframework.com.cpa.model.CpaRegistDetailVO">
+		INSERT INTO TB_BOARD_DETAIL (BROTHERS_IDX, TB_IDX, brothers_Name, brothers_Age, brothers_Drink_Yn) 
+			VALUES (TB_BOARD_DETAIL_BROTHERS_IDX_SERIAL.NEXT_VALUE, #{tbIdx}, #{brothersName}, #{brothersAge}, #{brothersDrinkYn})
+	</insert>
+	
+	<delete id="deleteCpaRegist" parameterType="egovframework.com.cpa.model.CpaRegistVO">
+		DELETE FROM TB_BOARD
+		WHERE TB_IDX = #{tbIdx}
+	</delete>
+	
+	<delete id="deleteCpaRegistDetail" parameterType="egovframework.com.cpa.model.CpaRegistVO">
+		DELETE FROM TB_BOARD_DETAIL
+		WHERE TB_IDX = #{tbIdx}
+	</delete>
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+
+    <formset>
+		<form name="cpaRegistVO">
+			<field property="title" depends="range">
+				<arg0 key="cpaRegistVO.title" />
+				<arg1 name="min" key="1" />
+				<arg2 name="max" key="5" />
+			</field>			
+			<field property="content" depends="required">
+				<arg0 key="cpaRegistVO.content" />
+			</field> 
+		</form>
+    </formset>
+
+</form-validation>
