@@ -548,48 +548,13 @@
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/libgpkiapi_jni-1.4.0.0.jar</systemPath>
         </dependency>
         <!-- 3rd party 라이브러리로 별도의 설치 필요 끝 -->
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.4</version>
-            <scope>test</scope>
-        </dependency>
- 
-        <dependency>
-            <groupId>org.easymock</groupId>
-            <artifactId>easymock</artifactId>
-            <version>2.4</version>
-            <scope>test</scope>
-        </dependency>
- 
-        <dependency>
-            <groupId>org.easymock</groupId>
-            <artifactId>easymockclassextension</artifactId>
-            <version>2.4</version>
-            <scope>test</scope>
-        </dependency>
- 
-        <dependency>
-            <groupId>org.dbunit</groupId>
-            <artifactId>dbunit</artifactId>
-            <version>2.4.3</version>
-            <scope>test</scope>
-        </dependency>
- 
-        <dependency>
-            <groupId>org.unitils</groupId>
-            <artifactId>unitils</artifactId>
-            <version>2.2</version>
-            <scope>test</scope>
-        </dependency>
         <!-- 공통컴포넌트 끝 -->
 
     </dependencies>
     <build>
         <defaultGoal>install</defaultGoal>
         <directory>${basedir}/target</directory>
-        <finalName>egovframework-all-in-one</finalName>
+        <finalName>egovtest</finalName>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -675,7 +640,7 @@
                     <username>tomcat</username>
                     <password>tomcat</password>
                     <path>/</path>
-                    <warFile>target\egovframework-all-in-one.war</warFile>
+                    <warFile>target\egovtest.war</warFile>
                     <update>true</update>
                 </configuration>
             </plugin>
