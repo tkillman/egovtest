@@ -2,6 +2,9 @@ package egovframework.com.cpa.service.impl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -155,5 +158,47 @@ public class CpaServiceImpl implements CpaService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void setDefaultStudentInfo(List<EgovFormBasedFileVo> uploadFileList, List<Map<String, String>> studentInfoList) throws FileNotFoundException, Exception {
+		
+		EgovFormBasedFileVo vo = uploadFileList.get(0);
+		String where = propertiesService.getString("cpaExcelUploadFilePath"); 
+		File file = new File(EgovWebUtil.filePathBlackList(where) + SEPERATOR + vo.getServerSubPath() + SEPERATOR + vo.getPhysicalName());
+		
+		// 엑셀 파일 로드
+		Workbook wb = null;
+		if (vo.getFileName().endsWith(".xls") || vo.getFileName().endsWith(".XLS")) {
+			wb = excelCpaService.loadWorkbook(new FileInputStream(file));
+		} else if(vo.getFileName().endsWith(".xlsx") || vo.getFileName().endsWith(".XLSX")) {
+			wb = excelCpaService.loadWorkbook(new FileInputStream(file), new XSSFWorkbook());
+		}
+		
+		Sheet sheet = wb.getSheetAt(0);
+		int lastRowNum = sheet.getLastRowNum();
+		Logger.debug("20200825 lastRowNum :: " + lastRowNum);
+		IntStream.range(0, lastRowNum + 1)
+					.forEach(i -> {
+						Row row = sheet.getRow(i);
+						Logger.debug("20200825 getLastCellNum :: " + row.getLastCellNum());
+						Cell cell = row.createCell(3);
+						if (i == 0) {
+							cell.setCellValue("유니크키");
+						} else {
+							int goubun = (int) row.getCell(0).getNumericCellValue();
+							String name = row.getCell(1).getStringCellValue();
+							
+							String uniqueKey = studentInfoList.stream().filter(studentInfo -> 
+																			Integer.parseInt(studentInfo.get("goubun")) == goubun &&
+																			name.equals(studentInfo.get("name"))
+																		).map(studentInfo -> studentInfo.get("uniqueIndex")).findFirst().orElse("");
+							cell.setCellValue(uniqueKey);
+						}						
+					});
+		
+		FileOutputStream out = new FileOutputStream(file);
+		wb.write(out);
+		out.close();
 	}
 }

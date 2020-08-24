@@ -1,0 +1,6 @@
+create table student
+(
+	GOUBUN numeric
+	, NAME varchar(100)
+	, ADDR varchar(1000)
+)

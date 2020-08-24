@@ -19,6 +19,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import egovframework.com.cmm.EgovBrowserUtil;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
@@ -218,11 +219,25 @@ public class EgovFileMngUtil {
 
 		byte[] buffer = new byte[BUFF_SIZE]; //buffer size 2K.
 
-		response.setContentType("application/x-msdownload");
-		response.setHeader("Content-Disposition:", "attachment; filename=" + new String(orgFileName.getBytes(), "UTF-8"));
-		response.setHeader("Content-Transfer-Encoding", "binary");
-		response.setHeader("Pragma", "no-cache");
-		response.setHeader("Expires", "0");
+//		response.setContentType("application/x-msdownload");
+//		response.setHeader("Content-Disposition:", "attachment; filename=" + new String(orgFileName.getBytes(), "UTF-8"));
+//		response.setHeader("Content-Transfer-Encoding", "binary");
+//		response.setHeader("Pragma", "no-cache");
+//		response.setHeader("Expires", "0");
+		
+		String userAgent = request.getHeader("User-Agent");
+		String mimetype = "application/x-msdownload";
+		HashMap<String,String> result = EgovBrowserUtil.getBrowser(userAgent);
+		if ( !EgovBrowserUtil.MSIE.equals(result.get(EgovBrowserUtil.TYPEKEY)) ) {
+			mimetype = "application/x-stuff";
+		}
+		
+		String contentDisposition = EgovBrowserUtil.getDisposition(orgFileName,userAgent,"UTF-8");
+		//response.setBufferSize(fSize);	// OutOfMemeory 발생
+		response.setContentType(mimetype);
+		//response.setHeader("Content-Disposition", "attachment; filename=\"" + contentDisposition + "\"");
+		response.setHeader("Content-Disposition", contentDisposition);
+		response.setContentLengthLong(file.length());
 
 		BufferedInputStream fin = null;
 		BufferedOutputStream outs = null;

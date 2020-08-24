@@ -104,11 +104,11 @@ function fn_egov_regist_cpaExcelUpload() {
 </table>
 <!-- 목록/저장버튼  -->
 <div class="txt-cnt mt20">
-		<input type="submit" class="btnStyle02 bg_gray" value="목록" onClick="fn_egov_list_Zip(); return false;" /> <!-- 목록 -->
-		<input type="submit" class="btnStyle02" value="저장" onClick="fn_egov_regist_cpaExcelUpload(); return false;" /> <!-- 저장 -->
-	</div>
-			
-		</div>
+	<input type="submit" class="btnStyle02 bg_gray" value="목록" onClick="fn_egov_list_Zip(); return false;" /> <!-- 목록 -->
+	<input type="submit" class="btnStyle02" value="저장" onClick="fn_egov_regist_cpaExcelUpload(); return false;" /> <!-- 저장 -->
+</div>
+		<a href="/cpa/cpaExcelDownload.do">샘플엑셀 다운로드</a>	
+</div>
 	</form:form>
 </body>
 </html>

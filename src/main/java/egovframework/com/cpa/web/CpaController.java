@@ -1,8 +1,14 @@
 package egovframework.com.cpa.web;
 
+import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +24,8 @@ import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.EgovFileMngService;
+import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cpa.model.CpaVO;
 import egovframework.com.cpa.service.CpaService;
 import egovframework.com.utl.fcc.service.EgovFileUploadUtil;
@@ -93,9 +101,45 @@ public class CpaController {
     	//TODO 파일업로드
     	List<EgovFormBasedFileVo> uploadFileList = EgovFileUploadUtil.uploadFiles(mptRequest, where, 0);
     	
+    	List<Map<String, String>> studentInfoList = getStudentInfo();
+    	
+    	cpaService.setDefaultStudentInfo(uploadFileList, studentInfoList);
+    	
     	cpaService.excelDbInsert(uploadFileList.get(0));
     	//종료
 		return "egovframework/com/cpa/cpaExcelUploadList";
 	}
 	
+	@RequestMapping(value="/cpa/cpaExcelDownload.do")
+	public void writeCpaExcelDownload(@ModelAttribute("cpaVO") CpaVO cpaVO, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		request.setAttribute("downFile", "C:\\Users\\82108\\git\\egovtest\\src\\main\\webapp\\upload\\자격증업로드엑셀.xlsx");
+		request.setAttribute("orgFileName", "자격증업로드엑셀.xlsx");
+		request.setAttribute("orginFile", "자격증업로드엑셀.xlsx");
+		
+		EgovFileMngUtil.downFile(request, response);
+	}
+	
+	public List<Map<String, String>> getStudentInfo(){
+		List<Map<String, String>> studentInfoList = new ArrayList<>();
+    	Map<String, String> studentInfo1 = new HashMap<>();
+    	studentInfo1.put("goubun","1");
+    	studentInfo1.put("name", "김동규");
+    	studentInfo1.put("uniqueIndex", "4");
+    	
+    	Map<String, String> studentInfo2 = new HashMap<>();
+    	studentInfo2.put("goubun","2");
+    	studentInfo2.put("name", "김재명");
+    	studentInfo2.put("uniqueIndex", "41");
+    	
+    	Map<String, String> studentInfo3 = new HashMap<>();
+    	studentInfo3.put("goubun","3");
+    	studentInfo3.put("name", "김성옥");
+    	studentInfo3.put("uniqueIndex", "412");
+    	
+    	studentInfoList.add(studentInfo1);
+    	studentInfoList.add(studentInfo2);
+    	studentInfoList.add(studentInfo3);
+    	return studentInfoList;
+	}
 }
